@@ -1,9 +1,6 @@
 package com.own.eosp;
 
 import com.own.eosp.model.Student;
-import org.jspecify.annotations.Nullable;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.Scope;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
