@@ -22,32 +22,3 @@ public class EngineeringOnSpringBootApplication {
 	}
 
 }
-
-
-//class CustomScope implements Scope {
-//
-//	@Override
-//	public Object get(String name, ObjectFactory<?> objectFactory) {
-//		return null;
-//	}
-//
-//	@Override
-//	public @Nullable Object remove(String name) {
-//		return null;
-//	}
-//
-//	@Override
-//	public void registerDestructionCallback(String name, Runnable callback) {
-//
-//	}
-//
-//	@Override
-//	public @Nullable Object resolveContextualObject(String key) {
-//		return Scope.super.resolveContextualObject(key);
-//	}
-//
-//	@Override
-//	public @Nullable String getConversationId() {
-//		return Scope.super.getConversationId();
-//	}
-//}
