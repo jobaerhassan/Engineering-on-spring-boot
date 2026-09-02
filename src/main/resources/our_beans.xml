@@ -6,10 +6,16 @@
     <bean id="student" class="com.own.eosp.model.Student" scope="singleton">
 <!--        <constructor-arg name="name" value="John Doe"/>-->
         <constructor-arg name="name" ref="studen_name"/>
+        <constructor-arg name="address" ref="Add" />
     </bean>
 
 
     <bean id="studen_name" class="java.lang.String">
         <constructor-arg value="Jobaer"/>
+    </bean>
+
+
+    <bean id="Add" class="com.own.eosp.model.Address">
+
     </bean>
 </beans>
