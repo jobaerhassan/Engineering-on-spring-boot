@@ -2,23 +2,28 @@ package com.own.eosp;
 
 import com.own.eosp.model.Address;
 import com.own.eosp.model.Student;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@SpringBootApplication
+@SpringBootApplication // have to use this in order to use annotation based application context
 public class EngineeringOnSpringBootApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EngineeringOnSpringBootApplication.class, args);
+
+		System.out.println("=== container start হচ্ছে... ===");
+		ApplicationContext context =
+				new AnnotationConfigApplicationContext(EngineeringOnSpringBootApplication.class);
+		System.out.println("=== container ready. এখন getBean করব ===");
+
+		Address a = context.getBean("address", Address.class);
+		System.out.println("getBean(address) → " + a);
+
+		Student s = context.getBean("stu", Student.class);
+		System.out.println("getBean(stu) → " + s);
 
 
-		ApplicationContext ct = new ClassPathXmlApplicationContext("our_beans.xml");
-		Student student = ct.getBean(Student.class);
-		System.out.println(student.getAddress());
-//		Student student = new Student("John Doe", new Address());
-//		System.out.println(student.getName());
 	}
 
 }
