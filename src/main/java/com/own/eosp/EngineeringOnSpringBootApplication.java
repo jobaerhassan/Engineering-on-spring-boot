@@ -12,16 +12,14 @@ public class EngineeringOnSpringBootApplication {
 
 	public static void main(String[] args) {
 
-		System.out.println("=== container start হচ্ছে... ===");
 		ApplicationContext context =
 				new AnnotationConfigApplicationContext(EngineeringOnSpringBootApplication.class);
-		System.out.println("=== container ready. এখন getBean করব ===");
 
-		Address a = context.getBean("address", Address.class);
-		System.out.println("getBean(address) → " + a);
+//		Address a = context.getBean("address", Address.class);
+//		System.out.println("getBean(address) → " + a);
 
-		Student s = context.getBean("stu", Student.class);
-		System.out.println("getBean(stu) → " + s);
+		Student s = context.getBean( Student.class);
+		System.out.println(s);
 
 
 	}

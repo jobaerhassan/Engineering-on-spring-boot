@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -14,16 +13,11 @@ import org.springframework.stereotype.Component;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Component("stu") // giving the bean an another name
+@Component
 public class Student {
 
     private String name;
 
     @Autowired
     private Address address;
-
-    @jakarta.annotation.PostConstruct
-    public void created() {
-        System.out.println(">> Student bean তৈরি হলো (এর ভেতরে address = " + address + ")");
-    }
 }
