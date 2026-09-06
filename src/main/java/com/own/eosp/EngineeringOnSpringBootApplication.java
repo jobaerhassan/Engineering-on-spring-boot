@@ -2,6 +2,8 @@ package com.own.eosp;
 
 import com.own.eosp.model.Address;
 import com.own.eosp.model.Student;
+import com.own.eosp.model.TimedBean;
+import com.own.eosp.scope.TimedScope;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -12,14 +14,17 @@ public class EngineeringOnSpringBootApplication {
 
 	public static void main(String[] args) {
 
-		ApplicationContext context =
+		ConfigurableApplicationContext context =
 				new AnnotationConfigApplicationContext(EngineeringOnSpringBootApplication.class);
 
-//		Address a = context.getBean("address", Address.class);
-//		System.out.println("getBean(address) → " + a);
+		context.getBeanFactory().registerScope("timed", new TimedScope());
 
-		Student s = context.getBean( Student.class);
+		TimedBean s = context.getBean(TimedBean.class);
 		System.out.println(s);
+		System.out.println(context.getBean(TimedBean.class));
+		System.out.println(context.getBean(TimedBean.class));
+		System.out.println(context.getBean(TimedBean.class));
+		System.out.println(context.getBean(TimedBean.class));
 
 
 	}
