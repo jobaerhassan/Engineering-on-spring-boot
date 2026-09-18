@@ -21,5 +21,11 @@ public class EngineeringOnSpringBootApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		publisher.publishEvent(new GreetingEvent("Hello World"));
+		Image image = new ProxyImage("photo.jpg");
+
+		// এই লাইনে এসে ইমেজটি লোড হবে এবং ডিসপ্লে হবে
+		image.display();
 	}
+
 }
+
