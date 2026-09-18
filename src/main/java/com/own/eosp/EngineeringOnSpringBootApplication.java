@@ -1,17 +1,25 @@
 package com.own.eosp;
 
 import com.own.eosp.event.GreetingEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
-@SpringBootApplication // have to use this in order to use annotation based application context
-public class EngineeringOnSpringBootApplication {
+@SpringBootApplication
+public class EngineeringOnSpringBootApplication implements CommandLineRunner {
 
+	@Autowired
+	private ApplicationEventPublisher publisher;
 	public static void main(String[] args) throws InterruptedException {
-		ConfigurableApplicationContext context = SpringApplication.run(EngineeringOnSpringBootApplication.class, args);
-		context.publishEvent(new GreetingEvent("hello from jobaer"));
+		SpringApplication.run(EngineeringOnSpringBootApplication.class, args);
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		publisher.publishEvent(new GreetingEvent("Hello World"));
+	}
 }
