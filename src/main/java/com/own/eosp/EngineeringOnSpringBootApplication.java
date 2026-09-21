@@ -9,16 +9,32 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
-@SpringBootApplication
-public class EngineeringOnSpringBootApplication implements CommandLineRunner {
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(EngineeringOnSpringBootApplication.class, args);
+public class EngineeringOnSpringBootApplication {
+	static final int PORT = 3000;
+
+	public static void main(String[] args) throws IOException {
+		startWebServer();
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-	}
+	public static void startWebServer() throws IOException {
+		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+			System.out.println("Server started on port " + PORT);
 
+			while(true) {
+				Socket socket = serverSocket.accept();
+				System.out.println("Request is serving by:" + Thread.currentThread().getName());
+				InputStream inputStream = socket.getInputStream();
+				byte[] bytes = new byte[inputStream.available()];
+				int len = inputStream.read(bytes);
+				String requestData = new String(bytes, 0, len);
+				System.out.println(requestData);
+			}
+		}
+	}
 }
 
