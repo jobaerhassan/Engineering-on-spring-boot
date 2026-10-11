@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Live Sports Dashboard - SSE</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        .status { color: #27ae60; font-weight: bold; margin-bottom: 25px; animation: blink 1.5s infinite; }
+        @keyframes blink { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .dashboard-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            flex: 1;
+            border-top: 5px solid #3498db;
+        }
+        .football-card { border-top-color: #e67e22; }
+        h2 { margin-top: 0; color: #34495e; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; }
+
+        .match-teams { font-size: 1.3rem; font-weight: bold; color: #2c3e50; text-align: center; margin: 15px 0; }
+        .score-row { display: flex; justify-content: space-around; margin: 15px 0; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+        .score-item { text-align: center; }
+        .score-label { font-size: 0.85rem; color: #7f8c8d; text-transform: uppercase; font-weight: 600; }
+        .score-value { font-size: 1.5rem; font-weight: bold; color: #2c3e50; margin-top: 5px; }
+        .badge-out { color: #c0392b; }
+    </style>
+</head>
+<body>
+
+<h1>Live Sports Dashboard</h1>
+<p class="status">● Match is going on (Live Stream Active)...</p>
+
+<div class="dashboard-container">
+
+    <!-- 🏏 CRICKET SCOREBOARD CARD -->
+    <div class="card">
+        <h2>Cricket Live Score</h2>
+        <!-- Teams Name ID -->
+        <div class="match-teams" id="cricket-teams">Loading Teams...</div>
+
+        <div class="score-row">
+            <!-- Runs ID -->
+            <div class="score-item">
+                <div class="score-label">Runs</div>
+                <div class="score-value" id="cricket-runs">0</div>
+            </div>
+            <!-- Wickets / Out ID -->
+            <div class="score-item">
+                <div class="score-label">Out</div>
+                <div class="score-value badge-out" id="cricket-out">0</div>
+            </div>
+            <!-- Overs ID -->
+            <div class="score-item">
+                <div class="score-label">Overs</div>
+                <div class="score-value" id="cricket-overs">0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⚽ FOOTBALL SCOREBOARD CARD -->
+    <div class="card football-card">
+        <h2>Football Live Score</h2>
+        <!-- Teams Name ID -->
+        <div class="match-teams" id="football-teams">Loading Teams...</div>
+
+        <div class="score-row">
+            <!-- Team 1 Goals ID -->
+            <div class="score-item">
+                <div class="score-label" id="football-team1-name">Team 1</div>
+                <div class="score-value" id="football-team1-goals">0</div>
+            </div>
+            <div class="score-value" style="font-size: 1.2rem; align-self: center; color: #7f8c8d;">VS</div>
+            <!-- Team 2 Goals ID -->
+            <div class="score-item">
+                <div class="score-label" id="football-team2-name">Team 2</div>
+                <div class="score-value" id="football-team2-goals">0</div>
+            </div>
+        </div>
+        <!-- Match Time/Minute ID -->
+        <div style="text-align: center; color: #7f8c8d; font-size: 0.9rem; font-weight: 600;" id="football-match-time">00:00</div>
+    </div>
+
+</div>
+
+<script>
+    const eventSource = new EventSource('http://localhost:9090/get-match-data');
+
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+
+        document.getElementById('cricket-teams').innerText =
+            data.team1 + " VS " + data.team2;
+
+        document.getElementById('cricket-runs').innerText =
+            data.runs;
+
+        document.getElementById('cricket-out').innerText =
+            data.out;
+
+        document.getElementById('cricket-overs').innerText =
+            data.overs;
+    };
+
+    // eventSource.addEventListener('cricket-update', function(event) {
+    //     console.log(event);
+    //     const data = JSON.parse(event.data);
+    //     console.log(data);
+    //     // আইডি ধরে ধরে ডেটা স্ক্রিনে পুশ করা হচ্ছে
+    //     document.getElementById('cricket-teams').innerText = data.team1 + " VS " + data.team2;
+    //     document.getElementById('cricket-runs').innerText = data.runs;
+    //     document.getElementById('cricket-out').innerText = data.out;
+    //     document.getElementById('cricket-overs').innerText = data.overs;
+    // });
+    //
+    // // ২. ফুটবল লাইভ ইভেন্ট লিসেনার
+    // eventSource.addEventListener('football-update', function(event) {
+    //     const data = JSON.parse(event.data);
+    //
+    //     // আইডি ধরে ধরে ডেটা স্ক্রিনে পুশ করা হচ্ছে
+    //     document.getElementById('football-teams').innerText = data.team1 + " VS " + data.team2;
+    //     document.getElementById('football-team1-name').innerText = data.team1;
+    //     document.getElementById('football-team2-name').innerText = data.team2;
+    //     document.getElementById('football-team1-goals').innerText = data.team1Goals;
+    //     document.getElementById('football-team2-goals').innerText = data.team2Goals;
+    //     document.getElementById('football-match-time').innerText = "Match Time: " + data.matchMinute + "'";
+    // });
+
+    // কানেকশন এরর হ্যান্ডেলিং
+    eventSource.onerror = function(error) {
+        console.error("SSE Connection Failed: ", error);
+        document.querySelector('.status').innerText = "● Connection lost. Reconnecting...";
+        document.querySelector('.status').style.color = "#c0392b";
+    };
+</script>
+</body>
+</html>
