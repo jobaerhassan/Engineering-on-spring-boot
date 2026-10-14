@@ -7,14 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 @Controller
 public class LiveMatchController {
@@ -42,6 +36,13 @@ public class LiveMatchController {
         eventPublisher.publishEvent(event);
     }
 
+    @GetMapping("/calculate")
+    public int calculate(@RequestParam int a, @RequestParam int b) throws Exception {
+        if (b == 0) {
+            throw new Exception("Cannot divide by zero");
+        }
+        return a / b;
+    }
     private void sleep(long ms) {
         try {
             Thread.sleep(ms);
