@@ -1,7 +1,9 @@
 package com.own.eosp.controller;
 
 import com.own.eosp.event.CricketMatchUpdateEvent;
-import com.own.eosp.handler.MatchEventHandler;
+import com.own.eosp.eventHandler.MatchEventHandler;
+import com.own.eosp.exception.AccessDeniedException;
+import com.own.eosp.exception.MathException;
 import com.own.eosp.model.MatchInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -39,7 +41,7 @@ public class LiveMatchController {
     @GetMapping("/calculate")
     public int calculate(@RequestParam int a, @RequestParam int b) throws Exception {
         if (b == 0) {
-            throw new Exception("Cannot divide by zero");
+            throw new MathException("Cannot divide by zero");
         }
         return a / b;
     }
@@ -49,6 +51,11 @@ public class LiveMatchController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        throw new AccessDeniedException("Access denied bhai!");
     }
 
 }

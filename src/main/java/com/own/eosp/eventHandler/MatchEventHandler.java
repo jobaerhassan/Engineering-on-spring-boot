@@ -1,4 +1,4 @@
-package com.own.eosp.handler;
+package com.own.eosp.eventHandler;
 
 import com.own.eosp.event.CricketMatchUpdateEvent;
 import org.springframework.context.event.EventListener;

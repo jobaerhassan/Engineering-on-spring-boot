@@ -26,7 +26,6 @@ public class CustomErrorController implements ErrorController { // must be imple
     @Autowired
     private ErrorAttributes errorAttributes;
 
-
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody // must be used because jehetu amra mvc er jonno kono html page return kortesina so body te html dite hobe.
