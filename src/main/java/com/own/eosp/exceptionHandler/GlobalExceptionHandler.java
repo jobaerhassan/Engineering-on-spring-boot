@@ -3,9 +3,16 @@ package com.own.eosp.exceptionHandler;
 import com.own.eosp.exception.AccessDeniedException;
 import com.own.eosp.exception.MathException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-//@RestControllerAdvice //-> turning off because so that we can test custom error controller
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestControllerAdvice
 // this is a global exception handler for rest controllers
 //@ControllerAdvice // this is a global exception handler for all controllers (mvc)
 // if we have both then rest controller will be preferred but we can use separate methods to differentiate the mvc and rest controllers
@@ -18,6 +25,7 @@ public class GlobalExceptionHandler {
     public String handleException(Exception ex) {
         return "Ex:- " + ex.getMessage();
     }
+
     // we can wire up multiple exception handlers
     @ExceptionHandler(MathException.class)
     public String handleMathException(MathException ex) {
@@ -28,4 +36,24 @@ public class GlobalExceptionHandler {
     public String handleAccessDeniedException(AccessDeniedException ex) {
         return "AccessDeniedEx:- " + ex.getMessage();
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        List<FieldError> fieldErrors = exception.getFieldErrors();
+        Map<String, String> errors = fieldErrors.stream().collect(Collectors.toMap(e -> e.getField(), e -> e.getDefaultMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", HttpStatus.BAD_REQUEST,
+                        "message", "Found Error on the table",
+                        "errors", errors));
+
+    }
+    /*
+    * response :- {
+                        "error": "400 BAD_REQUEST",
+                        "errors": {
+                            "age": "must be between 10 and 50"
+                        },
+                        "message": "Found Error on the table"
+                  }
+    * */
 }

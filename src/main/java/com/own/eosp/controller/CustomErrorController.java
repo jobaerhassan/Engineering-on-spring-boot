@@ -49,7 +49,8 @@ public class CustomErrorController implements ErrorController { // must be imple
         WebRequest webRequest = new ServletWebRequest(request);
         ErrorAttributeOptions options = ErrorAttributeOptions.defaults()
                 .including(ErrorAttributeOptions.Include.MESSAGE,
-                           ErrorAttributeOptions.Include.STACK_TRACE);
+                           ErrorAttributeOptions.Include.STACK_TRACE,
+                        ErrorAttributeOptions.Include.BINDING_ERRORS); // -> this will include the binding errors
         Map<String, @Nullable Object> map = errorAttributes.getErrorAttributes(webRequest, options);
         Object status = map.get("status");
         HttpStatus httpStatus = (status instanceof Integer code) ? HttpStatus.valueOf(code) : HttpStatus.INTERNAL_SERVER_ERROR;
