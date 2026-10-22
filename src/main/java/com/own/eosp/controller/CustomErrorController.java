@@ -45,8 +45,14 @@ public class CustomErrorController implements ErrorController { // must be imple
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> errorJson() {
-        return ResponseEntity.ok("Error occured");
+    public ResponseEntity<Map<String, @Nullable Object>> errorJson(HttpServletRequest request) {
+        WebRequest webRequest = new ServletWebRequest(request);
+        ErrorAttributeOptions options = ErrorAttributeOptions.defaults()
+                .including(ErrorAttributeOptions.Include.MESSAGE,
+                           ErrorAttributeOptions.Include.STACK_TRACE);
+        Map<String, @Nullable Object> map = errorAttributes.getErrorAttributes(webRequest, options);
+        Object status = map.get("status");
+        HttpStatus httpStatus = (status instanceof Integer code) ? HttpStatus.valueOf(code) : HttpStatus.INTERNAL_SERVER_ERROR;
+        return ResponseEntity.status(httpStatus).body(map);
     }
 }

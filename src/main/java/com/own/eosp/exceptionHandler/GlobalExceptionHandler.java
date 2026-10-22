@@ -5,7 +5,8 @@ import com.own.eosp.exception.MathException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestControllerAdvice // this is a global exception handler for rest controllers
+//@RestControllerAdvice //-> turning off because so that we can test custom error controller
+// this is a global exception handler for rest controllers
 //@ControllerAdvice // this is a global exception handler for all controllers (mvc)
 // if we have both then rest controller will be preferred but we can use separate methods to differentiate the mvc and rest controllers
 // ex: @Annotation, basePackages, basePackageClasses etc
